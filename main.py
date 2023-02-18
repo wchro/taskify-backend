@@ -1,11 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Form
 from database import db, password as pswrd
 
 
 app = FastAPI()
 
 @app.post("/signup")
-async def signup(username, password):
+async def signup(username: str = Form(), password: str = Form()):
     if not db.check_if_exists("users", "username", username):
         password = pswrd.gen_hash(password.encode("UTF-8"))
         db.signup(username, password)
