@@ -17,10 +17,18 @@ def check_if_exists(table, column, data):
     conn.close()
     return result is not None
 
-def signup(username: str, password: bytes):
+def get_data(table, column, data):
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
-    c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+    c.execute(f"SELECT * FROM {table} WHERE {column}=?", (data,))
+    result = c.fetchone()
+    conn.close()
+    return result
+
+def insert(sql, values):
+    conn = sqlite3.connect(DB_FILE)
+    c = conn.cursor()
+    c.execute(sql, values)
     conn.commit()
     conn.close()
 
