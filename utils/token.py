@@ -1,12 +1,15 @@
 import jwt
-from datetime import datetime
+from datetime import datetime, timedelta
 
 SECRET_KEY = "yOQ}/tu7|5MO" # ‼️ Change later (env)
 
-def generate(user_id):
+def generate(user_id, exp):
+    exp_date = datetime.now() + exp
+    exp = int(exp_date.timestamp())
+
     payload = {
         "user_id": user_id,
-        "datetime": int(datetime.now().timestamp())
+        "exp": exp
     }
     return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 
@@ -18,4 +21,4 @@ def verify(token):
             return user_id
     except:
         return None
-    
+        
