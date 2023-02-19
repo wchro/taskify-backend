@@ -1,16 +1,15 @@
+import asyncio
 from database import db
-from utils import password as pswrd, token
+from utils import password as pswrd
 
-def login(username: str, password: str):
+async def login(username: str, password: str):
     user = db.get_data("users", "username", username)
     user_id = user[0]
     password_hashed = user[2]
     if pswrd.check_pswd(password.encode("UTF-8"), password_hashed):
-        session_token = token.generate(user_id, token.timedelta(days=7))
-        access_token = token.generate(user_id, token.timedelta(minutes=15))
-        return {"success": True, "session_token": session_token, "access_token": access_token}
+        return True
     else:
-        return {"success": False, "msg": "Username or password is incorrect. Please try again."}
+        False
 
 def register(username: str, password: str):
     if not db.check_if_exists("users", "username", username):
