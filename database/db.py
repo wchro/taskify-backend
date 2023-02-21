@@ -6,6 +6,7 @@ def create_database():
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
     c.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password BLOB)")
+    c.execute("CREATE TABLE IF NOT EXISTS invalid_tokens (token BLOB, date_added TEXT)")
     conn.commit()
     conn.close()
 

@@ -7,9 +7,7 @@ def login(username: str, password: str):
         user_id = user[0]
         password_hashed = user[2]
         if pswrd.check_pswd(password.encode("UTF-8"), password_hashed):
-            session_token = jwt_token.generate(user_id, jwt_token.timedelta(days=7))
-            access_token = jwt_token.generate(user_id, jwt_token.timedelta(minutes=15))
-            return {"success": True, "session_token": session_token, "access_token": access_token}
+            return jwt_token.generate_tokens(user_id)
         else:
             return {"success": False, "msg": "Username or password is incorrect. Please try again."}
     except:
