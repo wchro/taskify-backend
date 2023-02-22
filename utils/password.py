@@ -7,3 +7,4 @@ def gen_hash(password: bytes):
 def check_pswd(password: bytes, hashed: bytes):
     return bcrypt.checkpw(password, hashed)
 
+

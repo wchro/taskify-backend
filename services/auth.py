@@ -15,9 +15,14 @@ def login(username: str, password: str):
 
 def register(username: str, password: str):
     if not db.check_if_exists("users", "username", username):
-        password = pswrd.gen_hash(password.encode("UTF-8"))
-        db.insert("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
-        return {"success": True, "msg": "You have successfully registered."}
+        if len(password) >= 8:
+            password = pswrd.gen_hash(password.encode("UTF-8"))
+            db.insert("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+            return {"success": True, "msg": "You have successfully registered."}
+        else:
+            return {"success": False, "msg": "Password must be at least 8 characters long."}
+
     else:
         return {"success": False, "msg": "Sorry, that username is already taken. Please try another."}
+    
 
