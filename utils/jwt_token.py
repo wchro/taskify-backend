@@ -32,6 +32,9 @@ def generate_tokens(user_id):
     return {"success": True, "session_token": session_token, "access_token": access_token}
 
 def invalidate(token):
-    db.insert("INSERT INTO invalid_tokens (token, date_added) VALUES (?, ?)", (token, int(datetime.now().timestamp())))
-    return {"success": True}
+    if verify(token)["success"]:
+        db.insert("INSERT INTO invalid_tokens (token, date_added) VALUES (?, ?)", (token, int(datetime.now().timestamp())))
+        return {"success": True}
+    else:
+        return {"success": False}
         

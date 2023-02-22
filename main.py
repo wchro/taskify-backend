@@ -20,7 +20,7 @@ async def verify_token(token = Form()):
 @app.put("/token/update")
 async def update_token(session_token = Form()):
     user = jwt_token.verify(session_token)
-    if user:
+    if user["success"]:
         return jwt_token.generate_tokens(user)
     else:
         return {"success": False, "msg": "Session expired. Please log in again to continue."}
