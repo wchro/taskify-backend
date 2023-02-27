@@ -18,7 +18,7 @@ def get_tasks(token):
                      json["tasks"].append(json_task)
         return json
     else:
-        return {"success":False, "msg": "Please provide valid credentials."}
+        return {"success":False, "msg": "Please provide valid credentials"}
     
 def add_tasks(title, description, date, token):
     user = jwt_token.verify(token)
@@ -27,4 +27,18 @@ def add_tasks(title, description, date, token):
         db.insert("INSERT INTO tasks (title, description, date, completed, user_id) VALUES (?,?,?,?, ?)", (title, description, date, 0, user_id))
         return {"success": True, "msg": "Task added successfully!"}
     else:
-        return {"success": False, "msg": "Please provide valid credentials."}
+        return {"success": False, "msg": "Please provide valid credentials"}
+    
+def delete_tasks(task_id, token):
+     user = jwt_token.verify(token)
+     if user["success"]:
+        if db.check_if_exists("tasks", "id", task_id):
+            task = db.get_data("tasks", "id", task_id)
+            if task[5] == user["user_id"]:
+                return {task_id}
+            else:
+                return {"success": False, "msg": "You're funny"}
+        else:
+            return {"success": False, "msg": "Task not found"}
+     else:
+        return {"success": False, "msg": "Please provide valid credentials"} 

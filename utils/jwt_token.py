@@ -24,9 +24,9 @@ def verify(token):
                 has_access = True if payload["type"] == "access_token" else False
                 return {"success": True, "user_id": user_id, "access": has_access }
         else:
-            return {"success": False, "msg": "Session expired. Please log in again to continue."}
+            return {"success": False, "msg": "Session expired. Please log in again to continue"}
     except:
-        return {"success": False, "msg": "Session expired. Please log in again to continue."}
+        return {"success": False, "msg": "Session expired. Please log in again to continue"}
     
 def generate_tokens(user_id):
     session_token = generate(user_id, "session_token", timedelta(days=7))
@@ -38,7 +38,7 @@ def update_token(session_token):
     if user["success"]:
         return generate_tokens(user)
     else:
-        return {"success": False, "msg": "Session expired. Please log in again to continue."}
+        return {"success": False, "msg": "Session expired. Please log in again to continue"}
 
 def invalidate(token):
     if verify(token)["success"]:

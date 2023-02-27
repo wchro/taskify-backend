@@ -32,3 +32,7 @@ async def get_tasks(token = Form()):
 @app.post("/tasks/add")
 async def add_tasks(title: str = Form(), description: str = Form(), date = Form(), token = Form()):
     return tasks.add_tasks(title, description, date, token)
+
+@app.delete("/tasks/delete")
+async def delete_tasks(task_id = Form(), token = Form()):
+    return tasks.delete_tasks(task_id, token)
