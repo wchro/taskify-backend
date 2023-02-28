@@ -34,4 +34,12 @@ def insert(sql, values):
     conn.commit()
     conn.close()
 
+def execute(sql):
+    conn = sqlite3.connect(DB_FILE)
+    c = conn.cursor()
+    c.execute(sql)
+    conn.commit()
+    conn.close()
+
+
 create_database()

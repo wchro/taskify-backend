@@ -35,7 +35,8 @@ def delete_tasks(task_id, token):
         if db.check_if_exists("tasks", "id", task_id):
             task = db.get_data("tasks", "id", task_id)
             if task[5] == user["user_id"]:
-                return {task_id}
+                db.execute(f"DELETE FROM 'tasks' WHERE id={task_id}")
+                return {"success": True, "msg": "Task successfully deleted"}
             else:
                 return {"success": False, "msg": "You're funny"}
         else:
