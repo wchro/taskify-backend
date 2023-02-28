@@ -36,3 +36,13 @@ async def add_tasks(title: str = Form(), description: str = Form(), date = Form(
 @app.delete("/tasks/delete")
 async def delete_tasks(task_id = Form(), token = Form()):
     return tasks.delete_tasks(task_id, token)
+
+@app.patch("/tasks/update")
+async def update_tasks(task_id = Form(), title = Form(), description = Form(), date = Form(), token = Form()):
+    return tasks.update_tasks(task_id, title, description, date, token)
+
+@app.post("/tasks/complete")
+async def complete_tasks(task_id = Form(), complete = Form(), token = Form()):
+    return tasks.complete_tasks(task_id, complete, token)
+
+

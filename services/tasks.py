@@ -42,4 +42,35 @@ def delete_tasks(task_id, token):
         else:
             return {"success": False, "msg": "Task not found"}
      else:
-        return {"success": False, "msg": "Please provide valid credentials"} 
+        return {"success": False, "msg": "Please provide valid credentials"}
+     
+def update_tasks(task_id, title, description, date, token):
+    user = jwt_token.verify(token)
+    if user["success"]:
+        if db.check_if_exists("tasks", "id", task_id):
+            task = db.get_data("tasks", "id", task_id)
+            if task[5] == user["user_id"]:
+                db.execute(f"UPDATE tasks SET title = '{title}', description = '{description}', date = '{date}' WHERE id={task_id}")
+                return {"success": True, "msg": "Task successfully updated"}
+            else:
+                return {"success": False, "msg": "You're funny"}
+        else:
+            return {"success": False, "msg": "Task not found"}
+    else:
+        return {"success": False, "msg": "Please provide valid credentials"}
+    
+def complete_tasks(task_id, complete, token):
+    user = jwt_token.verify(token)
+    if user["success"]:
+        if db.check_if_exists("tasks", "id", task_id):
+            task = db.get_data("tasks", "id", task_id)
+            if task[5] == user["user_id"]:
+                db.execute(f"UPDATE tasks SET completed={complete} WHERE id={task_id}")
+                return {"success": True, "msg": "Task successfully updated"}
+            else:
+                return {"success": False, "msg": "You're funny"}
+        else:
+            return {"success": False, "msg": "Task not found"}
+    else:
+        return {"success": False, "msg": "Please provide valid credentials"}
+    
